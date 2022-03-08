@@ -3,8 +3,8 @@ import os
 from scipy import io
 
 
-def load_data_locust(filename: "The file contains time snapshot matrix (without sea) created by MATLAB"):
-    timess_mat = io.loadmat(os.path.join('..', 'data', filename))
+def load_data_locust(filepath: "The file contains time snapshot matrix (without sea) created by MATLAB"):
+    timess_mat = io.loadmat(filepath)
     X = timess_mat['zz']  # var_name = 'zz' or 'zz_all'
     lat = timess_mat['lat_nosea']
     lon = timess_mat['lon_nosea']
