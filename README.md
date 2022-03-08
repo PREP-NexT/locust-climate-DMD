@@ -1,6 +1,6 @@
 # locust-climate-DMD
 
-This is the official repository for the paper "Rising risks of synchronized locust outbreaks linked to a changing climate". This study develops a data-driven workflow to unravel the relationship between locust and climate dynamics across multiple spatial and temporal scales. The dominant spatio-temporal dynamic patterns are extracted by multi-resolution dynamic mode decomposition (mrDMD) and the derived magnitude and phase are analysed by comparison between different countries, climatic zones, control measures, and climate variability patterns.
+This is the official repository for the paper "Rising risks of synchronized locust outbreaks linked to a changing climate" (not published yet). This study develops a data-driven workflow to unravel the relationship between locust and climate dynamics across multiple spatial and temporal scales. The dominant spatio-temporal dynamic patterns are extracted by multi-resolution dynamic mode decomposition (mrDMD) and the derived magnitude and phase are analysed by comparison between different countries, climatic zones, control measures, and climate variability patterns.
 
 ### Structure:
 -----------
