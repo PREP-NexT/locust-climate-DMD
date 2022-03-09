@@ -191,11 +191,12 @@ def stitch(nodes, level):
     return Phi, Psi
 
 
-def mode_selection(m, lmbd, Phi, dt=1, plot_log=False):
+def mode_selection(m, lmbd, Phi, dt=1, plot=None):
     """
         Mode selection to find out modes with highest power.
 
     [V 2021.08.26] Created, both climatic and locust variables can use.
+    :param plot: choose to plot semi-log or normal extent. Default is None, i.e., no plot.
     :param m: the order of eigenvalue for normalization
     :param lmbd: eigenvalue for normalization
     :param Phi: eigenvectors
@@ -209,7 +210,7 @@ def mode_selection(m, lmbd, Phi, dt=1, plot_log=False):
                       columns=['Frequency', f'power(m={m})', 'period'])
     df.sort_values(by=[f'power(m={m})'], inplace=True, ascending=False)
     # plot
-    if plot_log:
+    if plot == 'log':
         # semi-log
         fig, ax = plt.subplots(figsize=(8, 5))
         # plt.xticks(rotation=90)
@@ -220,7 +221,7 @@ def mode_selection(m, lmbd, Phi, dt=1, plot_log=False):
         ax.set_xlabel("Frequency (1/yr)")
         ax.set_ylabel(f"Power (m={m})")
         plt.show()
-    else:
+    elif plot == 'normal':
         # normal
         fig, ax = plt.subplots(figsize=(8, 5))
         # plt.xticks(rotation=90)
@@ -268,7 +269,7 @@ def get_1yr_mode(locust_type, Phi0_lo, period0_lo):
     return mode_locust, period_locust
 
 
-def mag_lo_ElLa(nodes_lo, ElLa='El', plot=False, Xlon=None, Ylat=None, nosea_indices_lo=None):
+def mag_lo_ElLa(nodes_lo, ElLa='El', plot=False, Xlon=None, Ylat=None, nosea_indices_lo=None, savepath=None):
     """
         Get locust magnitude during El Nino events or La Nina events. with or without plotting.
 
@@ -302,5 +303,5 @@ def mag_lo_ElLa(nodes_lo, ElLa='El', plot=False, Xlon=None, Ylat=None, nosea_ind
     mag = mag_sum / count
 
     if plot:
-        plot_mag_lo(mag=mag, Xlon=Xlon, Ylat=Ylat, nosea_indices=nosea_indices_lo, locust_type=ElLa)
+        plot_mag_lo(mag=mag, Xlon=Xlon, Ylat=Ylat, nosea_indices=nosea_indices_lo, locust_type=ElLa, savepath=savepath)
     return mag

@@ -85,8 +85,8 @@ def convert_mode_vector2XY_lo(mode_locust, nosea_indices_lo):
     return mode_XYm_wo0, mask_locust
 
 
-def plot_mag_lo(Xlon, Ylat, nosea_indices, locust_type, mag=None, mode=None,
-                save_lo_mask=False, normalization=True, mag_diff=False):
+def plot_mag_lo(Xlon, Ylat, nosea_indices, locust_type=None, mag=None, mode=None,
+                save_lo_mask=False, normalization=True, mag_diff=False, savepath=None):
     """
         Plot the magnitude derived from dynamic patterns.
 
@@ -123,8 +123,10 @@ def plot_mag_lo(Xlon, Ylat, nosea_indices, locust_type, mag=None, mode=None,
         magXYmn = magXYm
 
     ## preparation for color map and color bar
-    # bounds = [0, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 1e-1, 1]
-    bounds = [0, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1]
+    if (locust_type == "El") | (locust_type == "La"):
+        bounds = [0, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1]
+    else:
+        bounds = [0, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 1e-1, 1]
     cmap = plt.get_cmap('OrRd', len(bounds) - 1)  # original
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
@@ -189,19 +191,22 @@ def plot_mag_lo(Xlon, Ylat, nosea_indices, locust_type, mag=None, mode=None,
         # hide some tick labels for colorbar
         for label in cbar.ax.xaxis.get_ticklabels()[1::2]:  # use [1::2] to hide very other label
             label.set_visible(False)
-
-    plt.show()
+    # save figure
+    if savepath:
+        plt.savefig(savepath + "/Magnitude_{}.svg".format(add_on))
+    else:
+        plt.show()
 
     # save mask_locust
     # The mask_locust has been tested the same for every period, and saved successfully.
     # Locust all and locust adults have different mask, need to redo
     if save_lo_mask:
-        save_path = os.path.join('.', 'RESULTS', f'mask_locust_{locust_type}.mat')
+        print('Remember to specify your \'savepath\'!')
         mdic = {"mask_locust": mask_locust}
-        io.savemat(save_path, mdic)
+        io.savemat(os.path.join(savepath, f'mask_locust_{locust_type}.mat'), mdic)
 
 
-def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Ylat, nosea_indices, locust_type):
+def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Ylat, nosea_indices, locust_type, savepath=None):
     """
     Phase plot with discrete cyclic colorbar
 
@@ -237,7 +242,7 @@ def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Yl
     fig = plt.figure(figsize=(10, 5))
     gs = gridspec.GridSpec(1, 2, width_ratios=[3, 1])
 
-    fig.subplots_adjust(wspace=0)
+    fig.subplots_adjust(wspace=0.2)
 
     ax = plt.subplot(gs[0], projection=ccrs.PlateCarree())
     extent = [-18, 86, -4, 51]  # lon_min, lon_max, lat_min, lat_max
@@ -276,9 +281,9 @@ def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Yl
     cs = ax.pcolor(Xlon, Ylat, phaseXYmn, shading='auto', cmap=cmap, norm=norm, transform=ccrs.PlateCarree(),
                    zorder=3)
 
-    # set up colorbar
-    cbar = fig.colorbar(cs, orientation="horizontal")
-    cbar.ax.set_xlabel('phase [yr]')
+    # # set up colorbar
+    # cbar = fig.colorbar(cs, orientation="horizontal")
+    # cbar.ax.set_xlabel('phase [yr]')
 
     ################
     ## plot the cyclic color bar
@@ -311,4 +316,7 @@ def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Yl
     ax2.set_xticklabels(map(str, xtick_label), fontsize=15)
     ax2.set_title('Phase [yr]')
     ax2.set_ylim(0, 1)  # assure to show the blank
-
+    if savepath:
+        plt.savefig(savepath + "/Phase_{}.svg".format(add_on))
+    else:
+        plt.show()

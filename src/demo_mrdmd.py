@@ -17,20 +17,24 @@ part b-c in supplementary figure 1. Figure 2 and 4 could be reproduced by this s
 """
 
 ################## plot settings ##################
-plot_settings()
-
+# plot_settings()       # change the font
+save_path = "../results"
+if not os.path.exists(save_path):
+    os.makedirs(save_path)
 ###################### load data ##########################
 ## The data is available from "https://github.com/PREP-NexT/locust-climate-DMD" and should be saved under "./data" folder.
 
 locust_type = 'all'     # this could be changed!
 
 file_name = ''.join(['timesnapshots_', locust_type, 'Nosea'])
-timess_lo, Ylat, Xlon, nosea_indices_lo = load_data_locust(file_name)
+file_path = os.path.join('..', 'data', file_name)       # this is where the .mat file is
+timess_lo, Ylat, Xlon, nosea_indices_lo = load_data_locust(file_path)
 
 """
 Note: Change "locust_type" to run mrDMD for different periods, or different locust types. 
 You may choose from:
-['Adults', 'Hoppers', 'Swarms', 'Bands', 'all', 'all_1st18y', 'all_2nd18y'].
+['Adults', 'Hoppers', 'Swarms', 'Bands', 'all', 'all_1st18y', 'all_2nd18y']. 
+(the corresponding datasets will be available soon at https://github.com/PREP-NexT/locust-climate-DMD)
 The first five are for different types of locusts or all locusts in total, 
 the last two are for all locusts in period 1985-2002 or 2003-2020.
 """
@@ -67,25 +71,28 @@ period0_lo = 1 / freq0_lo  # corresponding period, unit: [yr]
 # Goal: find the mode with highest power near period=1 year. See details in Methods.
 
 p = 10       # p is selected by iterative method following Proctor and Eckhoff
-df = mode_selection(p, sLambda0_lo, Phi0_lo, dt=1)
+df = mode_selection(p, sLambda0_lo, Phi0_lo, dt=1, plot=None)
 
-
+"""
+Note: change "plot=None" to "plot='normal'" or "plot='log'" can visualize the mode selection.
+"""
 ################### visualize 1-year periodic mode (dynamic pattern) ####################
 
-mode_locust, period_locust = get_1yr_mode(locust_type, Phi0_lo, period0_lo)
+mode_locust, period_locust = get_1yr_mode(locust_type, Phi0_lo, period0_lo)     # retrieve 1-year periodic mode from level 0 nodes
 plot_mag_lo(mode=mode_locust, Xlon=Xlon, Ylat=Ylat, nosea_indices=nosea_indices_lo,
-            save_lo_mask=False, locust_type=locust_type)
-plot_phase_lo(mode_locust, period_locust, Xlon, Ylat, nosea_indices_lo, locust_type=locust_type)
+            save_lo_mask=False, locust_type=locust_type, savepath=save_path)        # plot magnitude in map
+plot_phase_lo(mode_locust, period_locust, Xlon, Ylat, nosea_indices_lo, locust_type=locust_type, savepath=save_path)     # plot phase in map
 
 
 #################### retrieve locust dynamic patterns influenced by El Nino/La Nina events ######################
 
-mag_El = mag_lo_ElLa(nodes_lo, ElLa='El', plot=True, Xlon=Xlon, Ylat=Ylat, nosea_indices_lo=nosea_indices_lo)
-mag_La = mag_lo_ElLa(nodes_lo, ElLa='La', plot=True, Xlon=Xlon, Ylat=Ylat, nosea_indices_lo=nosea_indices_lo)
+# get the magnitude of locust mode influenced by El Nino/La Nina events
+mag_El = mag_lo_ElLa(nodes_lo, ElLa='El', plot=True, Xlon=Xlon, Ylat=Ylat, nosea_indices_lo=nosea_indices_lo, savepath=save_path)
+mag_La = mag_lo_ElLa(nodes_lo, ElLa='La', plot=True, Xlon=Xlon, Ylat=Ylat, nosea_indices_lo=nosea_indices_lo, savepath=save_path)
 
-### plot El Nino-La Nina
+# plot El Nino vs La Nina
 mag_diff = mag_El - mag_La
-plot_mag_lo(Xlon=Xlon, Ylat=Ylat, nosea_indices=nosea_indices_lo, locust_type=locust_type, mag=mag_diff,
-                normalization=False, mag_diff=True)
+plot_mag_lo(Xlon=Xlon, Ylat=Ylat, nosea_indices=nosea_indices_lo, mag=mag_diff,
+                normalization=False, mag_diff=True, savepath=save_path)
 
 print("Finished!")
