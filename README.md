@@ -5,13 +5,29 @@ This repository is currently under development.
 
 ### Structure:
 -----------
- The source codes can be found in the `src` folder. The functions on mrDMD were adapted from [Robert Taylor's blog](http://www.pyrunner.com/weblog/2016/08/05/mrdmd-python/) and the book [Data driven science & engineering](http://www.databookuw.com/). We provide an example `demo_mrdmd.py` to show how to retrieve spatio-temporal locust patterns and quantify the influence of El Nino/La Nina events. It will be developed into an interactive  notebook via Google Colab soon. 
-The data used to run the demo can be found in the `data` folder. The output could be found in `results` folder.
+ We provide an example `demo_mrdmd.py` to show how to retrieve spatio-temporal locust patterns and quantify the influence of El Nino/La Nina events. It will be developed into an interactive  notebook via Google Colab soon. 
+ 
+ The source codes can be found in the `src` folder. Some of the functions on mrDMD were adapted from [Robert Taylor's blog](http://www.pyrunner.com/weblog/2016/08/05/mrdmd-python/) and the book [Data driven science & engineering](http://www.databookuw.com/). 
+The time snapshots data used to run the demo can be found in the `data` folder. The output will be found in `results` folder.
+
+### Requirements to run the demo:
+-----------
+ - You may set up a conda environment by running the following commands in the console (replace <environment_name> with the name of your virtual environment):
+ 
+ ``` bash
+ $ conda create --name <environment_name> cartopy=0.17.0 python=3.6 numpy=1.19.2 matplotlib=3.3.4 scipy=1.5.2 pandas=1.1.5
+ ```
+ - Or, if you decided to install the required packages (including numpy, pandas, scipy, cartopy, matplotlib) based on Python 3.x by yourself, remember to check if cartopy == 0.17.0. Using cartopy >= 0.18.0 may cause the following error when plotting the map: 
+ ```
+TypeError: 'Polygon' object is not iterable
+```
+ - Installing cartopy package may cause trial-and-error when `Getting requirements to build wheel...`. Please wait for a while because it will automatically try to solve the error. If finally it fails, we encourge you to set up a conda environment because cartopy has many dependencies and they might conflict with your current packages.
+
 
 
 ### Expected output:
 -----------
-Corresponding to the workflow as in Supplementary Figure 1, the example `demo_mrdmd.py` is divided into different sections, including data loading, mrDMD computation, mode selection, dynamic pattern visualization, and retrieving patterns associated with El Nino/La Nina events. The related variables and plots will be produced. The figures could be found in `results` folder.
+Corresponding to the workflow as in Supplementary Figure 1, the example `demo_mrdmd.py` is divided into different sections, including data loading, mrDMD computation, mode selection, dynamic pattern visualization, and retrieving patterns associated with El Nino/La Nina events. The related variables and plots will be produced. The produced figures will be found in `results` folder.
 
 #### Warnings:
 -----------
@@ -35,15 +51,3 @@ DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/cultural/ne_
   warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 ```
 
-### Requirements to run the demo:
------------
- - You may set up a conda environment by running the following commands in the console (replace <environment_name> with the name of your virtual environment):
- 
- ``` bash
- $ conda create --name <environment_name> cartopy=0.17.0 python=3.6 numpy=1.19.2 matplotlib=3.3.4 scipy=1.5.2 pandas=1.1.5
- ```
- - Or, if you decided to install the required packages (including numpy, pandas, scipy, cartopy, matplotlib) based on Python 3.x by yourself, remember to check if cartopy == 0.17.0. Using cartopy >= 0.18.0 may cause the following error: 
- ```
-TypeError: 'Polygon' object is not iterable
-```
- 
