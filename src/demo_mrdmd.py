@@ -8,7 +8,7 @@ from plot_utils import *
 
 # # working directory
 # os.getcwd()
-# os.chdir('')    #This should be the path where the data folder is
+# os.chdir('./src')    #This should be the path where the src folder is
 
 #############################  retrieve spatio-temporal patterns by mrDMD ################################
 """
