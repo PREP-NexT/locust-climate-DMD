@@ -1,16 +1,25 @@
 # locust-climate-DMD
 
-This is the official repository for the paper "Rising risks of synchronized locust outbreaks linked to a changing climate" (not published yet). This study develops a data-driven workflow to unravel the relationship between locust and climate dynamics across multiple spatial and temporal scales. The dominant spatio-temporal dynamic patterns are extracted by multi-resolution dynamic mode decomposition (mrDMD) and the derived magnitude and phase are analysed by comparison between different countries, climatic zones, control measures, and climate variability patterns.
-This repository is currently under development.
+### Overview:
+-----------
+This is the official repository for the paper "Unveiling the Role of Climate in Spatially Synchronized Locust Outbreak Risks". This study develop a data-driven workflow to unravel the complex relationship between locust and climate dynamics across multiple spatial and temporal scales (see Fig. S1). The method enables us to explore the underlying spatio-temporal dynamics utilizing a large stream of data while without high-dimension computational burden. We first create monthly time snapshots for locust occurrence, locust control, and climatic variables (Fig. S1a). We then implement modern dimension reduction techniques to extract dominant spatio-temporal dynamics of locust and climate (Fig. S1b). These dynamics allow us to identify hot spots of locust infestation and quantify the within- and cross-country compound risk of locust outbreak (Fig. S1c-d). We also conduct statistical analysis to investigate the locust-climate relationship and examine how such relationship varies across different climatic zones, control measures, and climate variability patterns (Fig. S1d). Finally, we extend our analysis to future periods with additional climate change scenarios using species distribution models (Fig. S1e). 
+
+This repository is under active development.
+
+<p align="center">
+  <img src="./figs/FigS1.png" width="80%"/>
+</p>
+
+Figure S1. Overall workflow summarizing the data-driven, equation-free dynamic pattern discovery and compound locust risk analysis. We first aggregate the data of locust frequency and climate variables, producing time snapshots and corresponding matrices (panel a). Then we extract the dynamic patterns using dynamic mode decomposition (DMD) by singular value decomposition and eigendecomposition (panel b). For stable dynamic modes having eigenvalues inside the unit circle, we select the most important modes with high powers (panel c). We obtain the magnitude and phase, which can pinpoint the hotspot and show the spread of locusts (panel c). The intra- and inter-country compound locust risks are analyzed by phase range and median phase difference (panel d). Spatially-filtered Spearman's rank correlation is utilized to show the linkage between locust abundance and climatic conditions. We also analyze the empirical cumulative distribution function (CDF) and probability distribution function (PDF) composited on different climatic or control conditions. Finally, we extend our analysis to future periods with additional climate change scenarios using species distribution models and multi-model climate ensembles (panel e). See Methods in our paper for details. 
 
 ### Structure:
 -----------
- We provide an example `demo_mrdmd.py` to show how to retrieve spatio-temporal locust patterns and quantify the influence of El Nino/La Nina events. It will be developed into an interactive  notebook via Google Colab soon. 
+We provide an example `demo_mrdmd.py` to show how to retrieve spatio-temporal locust patterns and quantify the influence of El Nino/La Nina events. It will be developed into an interactive  notebook via Google Colab soon. 
  
- The source codes can be found in the `src` folder. Some of the functions on mrDMD were adapted from [Robert Taylor's blog](http://www.pyrunner.com/weblog/2016/08/05/mrdmd-python/) and the book [Data driven science & engineering](http://www.databookuw.com/). 
+The source codes can be found in the `src` folder. Some of the functions on mrDMD were adapted from [Robert Taylor's blog](https://humaticlabs.com/blog/mrdmd-python/) and the book [Data driven science & engineering](http://www.databookuw.com/). 
 The time snapshots data used to run the demo can be found in the `data` folder. The output will be found in `results` folder.
 
-### Requirements to run the demo:
+### Get started:
 -----------
  - You may set up a conda environment by running the following commands in the console (replace <environment_name> with the name of your virtual environment):
  
@@ -23,6 +32,12 @@ TypeError: 'Polygon' object is not iterable
 ```
  - Installing cartopy package may cause trial-and-error when `Getting requirements to build wheel...`. Please wait for a while because it will automatically try to solve the error. If finally it fails, we encourge you to set up a conda environment because cartopy has many dependencies and they might conflict with your current packages.
 
+ - Now you can run the demo!
+ ``` bash
+ $ conda activate <environment_name>
+ $ cd /path/to/src
+ $ python demo_mrdmd.py
+ ```  
 
 
 ### Expected output:
