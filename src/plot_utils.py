@@ -206,6 +206,39 @@ def plot_mag_lo(Xlon, Ylat, nosea_indices, locust_type=None, mag=None, mode=None
         io.savemat(os.path.join(savepath, f'mask_locust_{locust_type}.mat'), mdic)
 
 
+def compute_phase(mode, normalized=True, period=None):
+    """
+        Transform the phase range from [-pi,pi] to [0,2pi]. With or without normalization.
+
+    :param mode: can be 1D or 2D, masked array or normal numpy array
+    :param normalized: if normalized=True, range=[0,1]; else, range=[0,2pi]
+    :param period: if period is not None, use it to compute normalized phase
+        Examples:   phase_lo_yr = compute_phase(mode_z_lo, period=period_locust)    # [0,period]
+                    phase_lo_n = compute_phase(mode_z_lo, normalized=True)      # [0,1]
+    :return:
+    """
+    phase_raw = np.angle(mode)
+    phase = phase_raw.copy()
+
+    ## check the dimension of mode
+    if len(phase.shape) == 2:
+        ## convert the phase from [-pi,pi] to [0,2pi]
+        for i in range(phase.shape[0]):
+            for j in range(phase.shape[1]):
+                if phase[i, j] < 0:
+                    phase[i, j] = phase[i, j] + 2*pi
+    elif len(phase.shape) == 1:
+        phase = np.asarray([phase_ele + 2 * pi if phase_ele < 0 else phase_ele for phase_ele in phase_raw])
+
+    # phase = phase / 2 / pi * period  # phase in [yr], assume period ~ 1
+    if normalized:
+        phase = phase / 2 / pi   # phase in [0,1]
+    if period is not None:
+        phase = phase / 2 / pi * period
+
+    return phase
+    
+
 def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Ylat, nosea_indices, locust_type, savepath=None):
     """
     Phase plot with discrete cyclic colorbar
@@ -226,9 +259,7 @@ def plot_phase_lo(mode: "mode vector", period: "this is for the title", Xlon, Yl
     """
     ## preparation for phase plot data
     mode_XYm, _ = convert_mode_vector2XY_lo(mode, nosea_indices)
-    phase_XYm = np.angle(mode_XYm)  # compute the angle [radians], -pi ~ pi;
-    phaseXYm_yr = phase_XYm / 2 / pi * period  # phase in [yr]
-    phaseXYmn = phase_XYm / 2 / pi + 1 / 2  # phase in [0,1]
+    phaseXYmn = compute_phase(mode_XYm, normalized=True)
 
     ## preparation for color map and color bar
     # get the colors from 'jet' colormap

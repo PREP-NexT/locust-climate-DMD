@@ -8,7 +8,7 @@ from plot_utils import *
 
 # # working directory
 # os.getcwd()
-# os.chdir('./src')    #This should be the path where the src folder is
+# os.chdir('')    #This should be the path where the data folder is
 
 #############################  retrieve spatio-temporal patterns by mrDMD ################################
 """
@@ -79,6 +79,11 @@ Note: change "plot=None" to "plot='normal'" or "plot='log'" can visualize the mo
 ################### visualize 1-year periodic mode (dynamic pattern) ####################
 
 mode_locust, period_locust = get_1yr_mode(locust_type, Phi0_lo, period0_lo)     # retrieve 1-year periodic mode from level 0 nodes
+
+## If mode_locust is the negative one, change it to positive
+if np.real(mode_locust[0]) < 0:
+    mode_locust = -mode_locust
+
 plot_mag_lo(mode=mode_locust, Xlon=Xlon, Ylat=Ylat, nosea_indices=nosea_indices_lo,
             save_lo_mask=False, locust_type=locust_type, savepath=save_path)        # plot magnitude in map
 plot_phase_lo(mode_locust, period_locust, Xlon, Ylat, nosea_indices_lo, locust_type=locust_type, savepath=save_path)     # plot phase in map
