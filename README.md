@@ -68,7 +68,7 @@ DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/cultural/ne_
 
 ### Citation:
 -----------
-Xinyue Liu et al. ,Unveiling the role of climate in spatially synchronized locust outbreak risks.Sci. Adv.10,eadj1164(2024).DOI:10.1126/sciadv.adj1164
+If you use this work, please consider citing our paper:
 
 ```bibtex
 @article{
