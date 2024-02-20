@@ -70,16 +70,18 @@ DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/cultural/ne_
 -----------
 Xinyue Liu et al. ,Unveiling the role of climate in spatially synchronized locust outbreak risks.Sci. Adv.10,eadj1164(2024).DOI:10.1126/sciadv.adj1164
 
+```bibtex
 @article{
-doi:10.1126/sciadv.adj1164,
-author = {Xinyue Liu  and Dongxiao Zhang  and Xiaogang He },
-title = {Unveiling the role of climate in spatially synchronized locust outbreak risks},
-journal = {Science Advances},
-volume = {10},
-number = {7},
-pages = {eadj1164},
-year = {2024},
-doi = {10.1126/sciadv.adj1164},
-URL = {https://www.science.org/doi/abs/10.1126/sciadv.adj1164},
-eprint = {https://www.science.org/doi/pdf/10.1126/sciadv.adj1164}}
-
+  doi:10.1126/sciadv.adj1164,
+  author = {Xinyue Liu  and Dongxiao Zhang  and Xiaogang He },
+  title = {Unveiling the role of climate in spatially synchronized locust outbreak risks},
+  journal = {Science Advances},
+  volume = {10},
+  number = {7},
+  pages = {eadj1164},
+  year = {2024},
+  doi = {10.1126/sciadv.adj1164},
+  URL = {https://www.science.org/doi/abs/10.1126/sciadv.adj1164},
+  eprint = {https://www.science.org/doi/pdf/10.1126/sciadv.adj1164}
+}
+```
