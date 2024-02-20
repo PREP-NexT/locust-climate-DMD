@@ -2,9 +2,9 @@
 
 ### Overview:
 -----------
-This is the official repository for the paper "Unveiling the Role of Climate in Spatially Synchronized Locust Outbreak Risks". This study develop a data-driven workflow to unravel the complex relationship between locust and climate dynamics across multiple spatial and temporal scales (see Fig. S1). The method enables us to explore the underlying spatio-temporal dynamics utilizing a large stream of data while without high-dimension computational burden. We first create monthly time snapshots for locust occurrence, locust control, and climatic variables (Fig. S1a). We then implement modern dimension reduction techniques to extract dominant spatio-temporal dynamics of locust and climate (Fig. S1b). These dynamics allow us to identify hot spots of locust infestation and quantify the within- and cross-country compound risk of locust outbreak (Fig. S1c-d). We also conduct statistical analysis to investigate the locust-climate relationship and examine how such relationship varies across different climatic zones, control measures, and climate variability patterns (Fig. S1d). Finally, we extend our analysis to future periods with additional climate change scenarios using species distribution models (Fig. S1e). 
+This is the official repository for the paper "[Unveiling the Role of Climate in Spatially Synchronized Locust Outbreak Risks](https://www.science.org/doi/full/10.1126/sciadv.adj1164)" published in Science Advances on 14 Feb 2024. This study develops a data-driven workflow to unravel the complex relationship between locust and climate dynamics across multiple spatial and temporal scales (see Fig. S1). The method enables us to explore the underlying spatiotemporal dynamics utilizing a large stream of data without high-dimensional computational burden. We first create monthly time snapshots for locust occurrence, locust control, and climatic variables (Fig. S1a). We then implement modern dimension reduction techniques to extract dominant spatiotemporal dynamics of locust and climate (Fig. S1b). These dynamics allow us to identify hot spots of locust infestation and quantify the within- and cross-country compound risk of locust outbreak (Fig. S1c-d). We also conduct statistical analysis to investigate the locust-climate relationship and examine how such relationship varies across different climatic zones, control measures, and climate variability patterns (Fig. S1d). Finally, we extend our analysis to future periods with additional climate change scenarios using species distribution models (Fig. S1e). 
 
-This repository is under active development.
+This repository is under active development. For archived data and codes, please see the [Zenodo](https://zenodo.org/records/10486653) version.
 
 <p align="center">
   <img src="./figs/FigS1.png" width="80%"/>
@@ -14,7 +14,7 @@ Figure S1. Overall workflow summarizing the data-driven, equation-free dynamic p
 
 ### Structure:
 -----------
-We provide an example `demo_mrdmd.py` to show how to retrieve spatio-temporal locust patterns and quantify the influence of El Nino/La Nina events. It will be developed into an interactive  notebook via Google Colab soon. 
+We provide an example `demo_mrdmd.py` to show how to retrieve spatiotemporal locust patterns and quantify the influence of El Nino/La Nina events. It will be developed into an interactive  notebook via Google Colab soon. 
  
 The source codes can be found in the `src` folder. Some of the functions on mrDMD were adapted from [Robert Taylor's blog](https://humaticlabs.com/blog/mrdmd-python/) and the book [Data driven science & engineering](http://www.databookuw.com/). 
 The time snapshots data used to run the demo can be found in the `data` folder. The output will be found in `results` folder.
@@ -65,4 +65,21 @@ DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_
 DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip
   warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 ```
+
+### Citation:
+-----------
+Xinyue Liu et al. ,Unveiling the role of climate in spatially synchronized locust outbreak risks.Sci. Adv.10,eadj1164(2024).DOI:10.1126/sciadv.adj1164
+
+@article{
+doi:10.1126/sciadv.adj1164,
+author = {Xinyue Liu  and Dongxiao Zhang  and Xiaogang He },
+title = {Unveiling the role of climate in spatially synchronized locust outbreak risks},
+journal = {Science Advances},
+volume = {10},
+number = {7},
+pages = {eadj1164},
+year = {2024},
+doi = {10.1126/sciadv.adj1164},
+URL = {https://www.science.org/doi/abs/10.1126/sciadv.adj1164},
+eprint = {https://www.science.org/doi/pdf/10.1126/sciadv.adj1164}}
 
