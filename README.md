@@ -72,7 +72,6 @@ If you use this work, please consider citing our paper:
 
 ```bibtex
 @article{
-  doi:10.1126/sciadv.adj1164,
   author = {Xinyue Liu  and Dongxiao Zhang  and Xiaogang He },
   title = {Unveiling the role of climate in spatially synchronized locust outbreak risks},
   journal = {Science Advances},
@@ -81,7 +80,6 @@ If you use this work, please consider citing our paper:
   pages = {eadj1164},
   year = {2024},
   doi = {10.1126/sciadv.adj1164},
-  URL = {https://www.science.org/doi/abs/10.1126/sciadv.adj1164},
-  eprint = {https://www.science.org/doi/pdf/10.1126/sciadv.adj1164}
+  URL = {https://www.science.org/doi/abs/10.1126/sciadv.adj1164}
 }
 ```
