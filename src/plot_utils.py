@@ -48,7 +48,7 @@ def highlight_country(country_name: "a list", ax: "the axis to be plotted",
                             path_effects=[PathEffects.withStroke(linewidth=2, foreground="k", alpha=.8)], zorder=4)
 
 
-### convert locust mode vector to mode_XY
+### convert locust mode vector to mode_XY (locust data)
 def convert_mode_vector2XY_lo(mode_locust, nosea_indices_lo):
     """
     Convert mode vector to mode_XY, where sea pixels and locust_mag=0 is masked
@@ -83,6 +83,110 @@ def convert_mode_vector2XY_lo(mode_locust, nosea_indices_lo):
     mask_locust = np.isnan(mode_XY_wo0)
 
     return mode_XYm_wo0, mask_locust
+
+
+### convert locust mode vector to mode_XY (climate data)
+def convert_mode_vector2XY_c(mode_climatic, nosea_indices_c, var_name, locust_type):
+    """
+    Convert mode vector to mode_XY, where sea pixels and locust_mag=0 is masked according to locust_type
+
+    [V 2021.07.06] Created the function to use in plot_mag, plot_phase, and conditional analysis
+
+    :param locust_type: to use in load_mask_locust()
+    :param var_name: to choose which conversion method to be used
+    :param mode_climatic: mode vector
+    :param nosea_indices_c: from load_data_climatic
+    :return: mode_XYm: masked, XY scale
+    """
+
+    mask_locust = load_mask_locust(locust_type)
+
+    # spi1 and spi3 is computed using all pixels (91520), no need to reconstruct
+    if (var_name == 'spi1') | (var_name == 'spi3'):
+        mode_XY = mode_climatic.reshape(220, 416)
+        # mag1XY = mag1.reshape((416, 220)).T   # This was used for locust, not right for spi3
+
+        # mask sea and where mag_locust = 0
+        mode_XYm = np.ma.masked_where(np.flipud(mask_locust), mode_XY)
+
+    # These variables are upside down, and need to use flipped mask_locust
+    if (var_name == 'vcpct') | (var_name == 'stl1') | (var_name == 't2m') \
+            | (var_name == 'u10') | (var_name == 'v10') | (var_name == 'wind_speed'):
+        mode_wsea = np.empty(len(nosea_indices_c), dtype=complex)
+        mode_wsea[:] = np.NaN
+
+        k = 0
+        for i in range(len(mode_wsea)):
+            if nosea_indices_c[i]:
+                mode_wsea[i] = mode_climatic[k]
+                k += 1
+        mode_XY = mode_wsea.reshape(220, 416)
+        mode_XYm = np.ma.masked_where(np.flipud(mask_locust), mode_XY)
+
+    # fldfrc is not upside down, and no need to use flipped mask_locust
+    if var_name == 'fldfrc':
+        mode_wsea = np.empty(len(nosea_indices_c), dtype=complex)
+        mode_wsea[:] = np.NaN
+
+        k = 0
+        for i in range(len(mode_wsea)):
+            if nosea_indices_c[i]:
+                mode_wsea[i] = mode_climatic[k]
+                k += 1
+        mode_XY = mode_wsea.reshape(220, 416)
+        mode_XYm = np.ma.masked_where(mask_locust, mode_XY)
+    return mode_XYm
+
+
+def convert_mode_XY2vectors(modeXY_lo, modeXY_c=None, var_name=None, cowcode_XY=None, ctrlXY=None):
+    """
+    Convert mode XY to mode vector in a compatible manner by making all dimensions the same.
+    This is for conditional analysis or correlation computation.
+
+    [V 2021.07.07] Created the function.
+
+    :param modeXY_lo: masked array (=mask_locust), not upside down.
+    :param modeXY_c: masked array(=mask_locust), with nan, some are upside down.
+    :param cowcode_XY: masked array, with nan. country mask, not upside down
+    :param ctrlXY: not masked array, with nan. control mask, not upside down
+    :return: return list with printed words.
+    """
+    if modeXY_c is not None:  # keep the non nan numbers of modeXY_c and modeXY_lo the same
+        if var_name == 'fldfrc':
+            modeXY_lo = np.ma.masked_where(np.isnan(modeXY_c), modeXY_lo)
+            modeXY_c = np.ma.masked_where(np.isnan(modeXY_c), modeXY_c)
+        else:  # except for 'fldfrc', all the other vars are upside down.
+            modeXY_c = np.flipud(modeXY_c)
+            modeXY_lo = np.ma.masked_where(np.isnan(modeXY_c), modeXY_lo)
+            modeXY_c = np.ma.masked_where(np.isnan(modeXY_c), modeXY_c)
+    if cowcode_XY is not None:  # keep the masked numbers of cowcode_XY and modeXY_lo the same
+        modeXY_lo = np.ma.masked_where(cowcode_XY.mask, modeXY_lo)
+        cowcode_XY = np.ma.masked_where(modeXY_lo.mask, cowcode_XY)
+        if modeXY_c is not None:  # keep modeXY_c refreshed
+            modeXY_c = np.ma.masked_where(cowcode_XY.mask, modeXY_c)
+    if ctrlXY is not None:
+        ctrlXY = np.ma.masked_where(modeXY_lo.mask, ctrlXY)
+        ctrlXY = np.ma.masked_invalid(ctrlXY)
+
+    ## return
+    # print('\n*************\nConvert_mode_XY2vectors:')
+    # flattened array w/o mask
+    mode_z_lo = np.array(modeXY_lo[~modeXY_lo.mask])
+    return_list = [mode_z_lo]
+    # print('Results append \'mode_z_lo\'')
+    if modeXY_c is not None:
+        mode_z_c = np.array(modeXY_c[~modeXY_c.mask])
+        return_list.append(mode_z_c)
+        # print('Results append \'mode_z_c\'')
+    if cowcode_XY is not None:
+        cowcode_z = np.array(cowcode_XY[~cowcode_XY.mask])
+        return_list.append(cowcode_z)
+        # print('Results append \'cowcode_z\'')
+    if ctrlXY is not None:
+        ctrl_z = np.array(ctrlXY[~ctrlXY.mask])
+        return_list.append(ctrl_z)
+        # print('Results append \'ctrl_z\'')
+    return return_list
 
 
 def plot_mag_lo(Xlon, Ylat, nosea_indices, locust_type=None, mag=None, mode=None,
